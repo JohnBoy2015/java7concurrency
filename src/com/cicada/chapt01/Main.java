@@ -3,11 +3,26 @@ package com.cicada.chapt01;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
+//        demo1();
+    Thread t1 = new PrimeGenerator();
+    t1.start();
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t1.interrupt();
+        Thread.sleep(11);
+        System.out.println("Main:"+t1.isInterrupted());
+    }
+
+    private static void demo1() {
         Thread threads [] =new Thread[10];
         Thread.State status[] =new Thread.State[10];
         for (int i = 0; i <10; i++) {
@@ -40,11 +55,8 @@ public class Main {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } ;
-
-
-
-
+        }
+        ;
     }
 
     private static void writeThreadInfo(PrintWriter pw, Thread thread, Thread.State state) {
